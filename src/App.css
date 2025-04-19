@@ -1,3 +1,11 @@
 .scrolbar-none::-webkit-scrollbar{
   display: none;
 }
+
+.backdrop-sm {
+  backdrop-filter: blur(4px);
+}
+
+.backdrop-glass {
+  backdrop-filter: blur(16px);
+}

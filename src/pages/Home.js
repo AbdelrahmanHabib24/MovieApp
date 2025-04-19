@@ -3,6 +3,7 @@ import BannerHome from '../components/BannerHome';
 import { useSelector } from 'react-redux';
 import HorizontalScollCard from '../components/HorizontalScollCard';
 import useFetch from '../hooks/useFetch';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const trendingData = useSelector(state => state.movieo.bannerData);
@@ -31,7 +32,7 @@ const Home = () => {
   }, [loadingNowPlaying, loadingTopRated, loadingPopularTvShows, loadingOnTheAirShows]);
 
   return (
-    <div>
+    <div className=''>
       {/* Banner Section */}
       <BannerHome />
 
@@ -68,6 +69,8 @@ const Home = () => {
         heading="On The Air"
         media_type="tv"
       />
+
+      <Footer/>
     </div>
   );
 };

@@ -4,12 +4,22 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import MobileNavigation from './components/MobileNavigation';
 import axios from 'axios';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect , useState } from 'react';
+import { useDispatch , useSelector } from 'react-redux';
 import { setBannerData,setImageURL } from './store/movieoSlice';
 
 function App() {
   const dispatch = useDispatch()
+  const [currentImage] = useState(1); // Hardcoded for now, can be dynamic later
+
+  const bannerData = useSelector((state) => state.movieo.bannerData);
+  const imageURL = useSelector((state) => state.movieo.imageURL) || 'https://image.tmdb.org/t/p/original';
+
+  // Dynamic backdrop image with fallback
+  const backgroundImage =
+    bannerData?.[currentImage]?.backdrop_path
+      ? `${imageURL}${bannerData[currentImage].backdrop_path}`
+      : 'https://via.placeholder.com/1280x720?text=No+Image';
 
   const fetchTrendingData = async()=>{
     try {
@@ -37,14 +47,23 @@ function App() {
   },[])
   
   return (
-    <main className='pb-14 lg:pb-0'>
-        <Header/>
-        <div className='min-h-[90vh]'>
-            <Outlet/>
+   <> <div
+    style={{
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    }}
+    className="fixed inset-0  backdrop-blur-lg blur-lg    pointer-events-none transition-all duration-500 z-0"
+    data-aos="fade"
+  />
+    <main className='pb-0 dark:bg-black lg:pb-0'>
+        <Header className=''/>
+        <div className='min-h-[90vh] '>
+            <Outlet  />
         </div>
-        <Footer/>
         <MobileNavigation/>
     </main>
+    </>
   );
 }
 

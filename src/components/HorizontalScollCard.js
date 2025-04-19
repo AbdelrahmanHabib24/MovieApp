@@ -1,6 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react'
-import Card from './Card'
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
+import React, { useRef, useState, useEffect } from 'react';
+import Card from './Card';
+import '../App.css';
+import '../index.css';
+import { FaAngleRight, FaAngleLeft } from 'react-icons/fa6';
 
 const HorizontalScrollCard = ({ data = [], heading, trending, media_type }) => {
   const containerRef = useRef();
@@ -16,10 +18,10 @@ const HorizontalScrollCard = ({ data = [], heading, trending, media_type }) => {
       setIsScrollEnd(isEnd);
       setIsScrollStart(isStart);
     };
-    
+
     const container = containerRef.current;
     container.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       container.removeEventListener('scroll', handleScroll);
     };
@@ -41,11 +43,11 @@ const HorizontalScrollCard = ({ data = [], heading, trending, media_type }) => {
         {/* Cards container */}
         <div
           ref={containerRef}
-          className="grid grid-cols-[repeat(auto-fit,230px)] grid-flow-col gap-6 overflow-hidden overflow-x-scroll relative z-10 scroll-smooth transition-all scrollbar-none"
+          className="grid grid-cols-[repeat(auto-fit,180px)]  sm:grid-cols-[repeat(auto-fit,230px)] lg:grid-cols-[repeat(auto-fill,minmax(230px,1fr))] grid-flow-col gap-4 sm:gap-6 overflow-auto md:overflow-auto lg:overflow-hidden relative z-10 scroll-smooth transition-all"
         >
           {data.map((data, index) => (
             <Card
-              key={data.id + "heading" + index}
+              key={data.id + 'heading' + index}
               data={data}
               index={index + 1}
               trending={trending}

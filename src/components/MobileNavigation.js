@@ -1,30 +1,31 @@
+// MobileNavigation.jsx
+
 import React from "react";
-import { mobileNavigation } from "../contant/navigation";
 import { NavLink } from "react-router-dom";
-import clsx from "clsx"; // npm install clsx
+import clsx from "clsx";
+import { mobileNavigation } from "../contant/navigation";
 
 const MobileNavigation = () => {
   return (
-    <section className="lg:hidden h-14 bg-black bg-opacity-70 backdrop-blur-2xl fixed bottom-0 w-full z-40">
-      <div className="flex items-center justify-between h-full text-neutral-400">
+    <nav className="fixed bottom-0 left-0 w-full h-16 bg-black/70 backdrop-blur-md z-50 lg:hidden border-t border-white/10">
+      <div className="flex items-center justify-around h-full text-neutral-400">
         {mobileNavigation.map((nav) => (
           <NavLink
             key={nav.href}
             to={nav.href}
             className={({ isActive }) =>
               clsx(
-                "px-3 flex h-full items-center flex-col justify-center",
-                isActive && "text-white"
+                "flex flex-col items-center justify-center gap-0.5 text-xs transition duration-200",
+                isActive ? "text-white" : "hover:text-white/80"
               )
             }
-            aria-label={nav.label} // Adding aria-label for better accessibility
           >
-            <div className="text-2xl">{nav.icon}</div>
-            <p className="text-sm">{nav.label}</p>
+            {nav.icon}
+            <span>{nav.label}</span>
           </NavLink>
         ))}
       </div>
-    </section>
+    </nav>
   );
 };
 
