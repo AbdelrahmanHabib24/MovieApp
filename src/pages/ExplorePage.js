@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Card from "../components/Card";
+import { useSelector } from "react-redux";
 
 const Loader = () => {
   return (
@@ -20,14 +21,24 @@ const Loader = () => {
 
 const ExplorePage = () => {
   const { explore } = useParams();
+  const navigate = useNavigate();
   const [pageNo, setPageNo] = useState(1);
   const [data, setData] = useState([]);
   const [totalPageNo, setTotalPageNo] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+
+  // Get imageURL from Redux
+  const imageURL =
+    useSelector((state) => state.movieo.imageURL) ||
+    "https://image.tmdb.org/t/p/original";
 
   const API_KEY = process.env.REACT_APP_ACCESS_TOKEN;
+
+  // Dynamic background based on the first item in data (poster_path)
+  const backgroundImage = data?.[0]?.poster_path
+    ? `${imageURL}${data[0].poster_path}` // Use poster_path for background image
+    : "https://via.placeholder.com/1280x720?text=No+Image"; // Fallback image if no poster_path
 
   const fetchData = useCallback(async () => {
     if (!API_KEY) {
@@ -60,7 +71,7 @@ const ExplorePage = () => {
         error.response?.data || error.message
       );
       setError("Unable to fetch data. Please try again later.");
-      navigate("/");
+      navigate("/"); // Navigate to homepage if error occurs
     } finally {
       setLoading(false);
     }
@@ -102,46 +113,60 @@ const ExplorePage = () => {
   }, [loading, pageNo, totalPageNo]);
 
   return (
-    <div className="py-14 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-b backdrop-blur-lg from-black/20 to-transparent min-h-screen">
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        {explore && data.length > 0 && (
-          <h3
-            className="capitalize text-white text-sm sm:text-base md:text-lg lg:text-xl font-semibold my-3 sm:my-4 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 inline-block transition-all duration-300 hover:bg-orange-500/20 hover:text-orange-500"
-            data-aos="fade-down"
-            data-aos-duration="600"
-          >
-            Popular {explore}
-          </h3>
-        )}
+    <>
+      {/* Dynamic Background */}
+      <div
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        className="fixed inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent backdrop-blur-sm pointer-events-none transition-all duration-500 z-0"
+        data-aos="fade"
+      />
 
-        {loading && !data.length && <Loader />}
-
-        {error && (
-          <div className="text-red-500 text-sm sm:text-base md:text-lg bg-black/50 backdrop-blur-sm rounded-lg px-4 py-3 my-3">
-            {error}
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-10 lg:gap-12 px-3 sm:px-4 md:px-6 lg:px-8">
-          {data.map((exploreData, index) => (
-            <Card
-              data={exploreData}
-              key={exploreData.id + "exploreSection" + index}
-              media_type={explore}
-              data-aos="fade-up"
+      {/* Main Content */}
+      <div className="py-14 sm:py-10 md:py-12 lg:py-14 backdrop-blur-lg relative z-10 min-h-screen">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          {explore && data.length > 0 && (
+            <h3
+              className="capitalize text-white text-sm sm:text-base md:text-lg lg:text-xl font-semibold my-3  sm:my-4 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 inline-block transition-all duration-300 hover:bg-orange-500/20 hover:text-orange-500"
+              data-aos="fade-down"
               data-aos-duration="600"
-              data-aos-offset="50"
-            />
-          ))}
-        </div>
+            >
+              Popular {explore}
+            </h3>
+          )}
 
-        {loading && data.length > 0 && (
-          <div className="text-center py-4 sm:py-5 md:py-6">
-            <div className="inline-block w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 border-2 sm:border-3 md:border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          {loading && !data.length && <Loader />}
+
+          {error && (
+            <div className="text-red-500 text-sm sm:text-base md:text-lg bg-black/50 backdrop-blur-sm rounded-lg px-4 py-3 my-3">
+              {error}
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-10 lg:gap-12 px-3 sm:px-4 md:px-6 lg:px-8">
+            {data.map((exploreData, index) => (
+              <Card
+                data={exploreData}
+                key={exploreData.id + "exploreSection" + index}
+                media_type={explore}
+                data-aos="fade-up"
+                data-aos-duration="600"
+                data-aos-offset="50"
+              />
+            ))}
           </div>
-        )}
+
+          {loading && data.length > 0 && (
+            <div className="text-center py-4 sm:py-5 md:py-6">
+              <div className="inline-block w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 border-2 sm:border-3 md:border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
