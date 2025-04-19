@@ -40,7 +40,7 @@ const Home = () => {
       {isLoading && <div className="text-center text-white">Loading...</div>}
 
       {/* Trending Section */}
-      <HorizontalScollCard data={trendingData} heading="Trending" trending={true} />
+      <HorizontalScollCard data={trendingData} heading="Trending"  trending={true} />
 
       {/* Now Playing Section */}
       <HorizontalScollCard

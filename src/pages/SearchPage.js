@@ -99,8 +99,8 @@ const SearchPage = () => {
         data-aos="fade-down"
         data-aos-delay="100"
       >
-        <div className=" lg:hidden relative flex items-center">
-          <FiSearch className="fixed left-4 text-neutral-500 text-lg" />
+        <div className=" xl:hidden relative flex py-2 items-center">
+          <FiSearch className="fixed  text-neutral-500 text-lg" />
           <input
             type="text"
             placeholder="Search movies, TV shows, or people..."

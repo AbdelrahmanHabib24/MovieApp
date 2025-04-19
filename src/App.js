@@ -53,10 +53,10 @@ function App() {
       backgroundSize: 'cover',
       backgroundPosition: 'center',
     }}
-    className="fixed inset-0  backdrop-blur-lg blur-lg    pointer-events-none transition-all duration-500 z-0"
+    className="fixed inset-0 bg-gradient-to-t blur-lg from-black/80 via-black/40 to-transparent backdrop-blur-sm pointer-events-none transition-all duration-500 z-0"
     data-aos="fade"
   />
-    <main className='pb-0 dark:bg-black lg:pb-0'>
+    <main className='pb-0 lg:pb-0'>
         <Header className=''/>
         <div className='min-h-[90vh] '>
             <Outlet  />
